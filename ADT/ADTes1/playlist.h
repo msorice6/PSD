@@ -6,3 +6,7 @@ Playlist createPlaylist(char* name);
 void addSong(Playlist, Song);
 void removeSong(Playlist, char*);
 void printPlaylist(Playlist);
+
+// METODI CREATI DA ME
+void testaAlContrario(Playlist p, Song *s);
+int getCanzoniSize(Playlist p);

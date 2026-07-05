@@ -6,13 +6,15 @@ struct song{
 	char *title;
 	char *artist;
 	int duration;
+	int gradimento;
 };
 
-Song initSong(char* title, char* artist, int duration){
+Song initSong(char* title, char* artist, int duration, int gradimento){
 	Song s = malloc(sizeof(struct song));
 	s->title = strdup(title);
 	s->artist = strdup(artist);
 	s->duration = duration;
+	s->gradimento = gradimento;
 	return s;
 }
 
@@ -30,4 +32,8 @@ char* artist(Song s){
 
 int duration(Song s){
 	return s->duration;
+}
+
+int gradimento(Song s){
+    return s->gradimento;
 }

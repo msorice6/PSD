@@ -12,28 +12,35 @@ rappresentate tramite l’ADT Song.
 #include <time.h>
 #include "playlist.h"
 #include "item.h"
-
+void sortPerGradimento(Playlist p);
 int main() {
     Playlist p;
-    int gradimento[3];
 
     Song s[3];
 
     p = createPlaylist("Rock");
 
-    s[0] = initSong("a", "1", 3);
-    gradimento[0] = 4;
+    s[0] = initSong("a", "1", 3,0);
     addSong(p, s[0]);
 
-    s[1] = initSong("b", "2", 6);
-    gradimento[1] = 1;
+    s[1] = initSong("b", "2", 6,1);
     addSong(p, s[1]);
+
+    testaAlContrario(p,s);
 
     printPlaylist(p);
 
-
+    sortPerGradimento(p);
 
 
     return 0;
 
+}
+
+void sortPerGradimento(Playlist p){
+    for(int i = 0; i<getCanzoniSize(p); i++){
+
+
+
+    }
 }

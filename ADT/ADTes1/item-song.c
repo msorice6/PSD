@@ -6,12 +6,12 @@
 
 Item inputItem(){
 	printf("Non usare inputItem(). Non richiedere input da tastiera.\n");
-	return initSong("titolo di prova", "artista di prova", 120);
+	return initSong("titolo di prova", "artista di prova", 120,0);
 }
 
 void outputItem(Item item){
 	Song s = item;
-	printf("\n%s - %s (%d sec.)", artist(s), title(s), duration(s));
+	printf("\n%s - %s (%d sec.)", artist(s), title(s), duration(s), gradimento(s));
 }
 
 

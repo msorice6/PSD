@@ -23,14 +23,25 @@ void addSong(Playlist p, Song s){
 }
 
 void removeSong(Playlist p, char *title){
-	Song s = initSong(title, "", 0);
+	Song s = initSong(title, "", 0,0);
 	removeListItem(p->songs, s);
 }
 
 void printPlaylist(Playlist p){
+
 	printf("Playlist: %s", p->name);
 	printList(p->songs);
 	printf("\n");
+
 }
 
+void testaAlContrario(Playlist p, Song *s){
+    printf("sto in testaAlContrario\n");
+
+    printf("\n%s\n",artist(s[0]));
+}
+
+int getCanzoniSize(Playlist p){
+    return sizeList(p->songs);
+}
 
