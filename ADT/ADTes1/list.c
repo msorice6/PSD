@@ -93,7 +93,6 @@ int setListItemPos(List list, int pos, Item item){
 	return 1;
 }
 
-
 Item searchList(List list, Item item, int *pos){
 	struct node *p;
 	*pos=0;
