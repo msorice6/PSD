@@ -37,3 +37,6 @@ int duration(Song s){
 int gradimento(Song s){
     return s->gradimento;
 }
+
+
+

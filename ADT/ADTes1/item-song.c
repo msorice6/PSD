@@ -20,3 +20,8 @@ int cmpItem(Item item1, Item item2){
 	Song s2 = item2;
 	return strcmp(title(s1), title(s2));
 }
+
+int getGradimento(Item item){
+    Song s = item;
+    return gradimento(s);
+}

@@ -1,4 +1,4 @@
-/*
+/* SORT PER GRADIMENTO
 Sviluppare un nuovo operatore di Playlist che dato in input una playlist la ordini dalla canzone più
 gradita alla meno gradita. Sviluppare un algoritmo di ordinamento a scelta del candidato. Non
 modificare l’ADT list.
@@ -13,34 +13,28 @@ rappresentate tramite l’ADT Song.
 #include "playlist.h"
 #include "item.h"
 void sortPerGradimento(Playlist p);
+
 int main() {
+
     Playlist p;
-
     Song s[3];
-
     p = createPlaylist("Rock");
 
-    s[0] = initSong("a", "1", 3,0);
+    s[0] = initSong("a", "1", 3,2);
     addSong(p, s[0]);
 
-    s[1] = initSong("b", "2", 6,1);
+    s[1] = initSong("b", "2", 6,10);
     addSong(p, s[1]);
 
-    testaAlContrario(p,s);
+    s[2] = initSong("c", "3", 6,1);
+    addSong(p, s[2]);
 
+    insertionSort(p);
+
+//    testaAlContrario(p,s);
     printPlaylist(p);
-
-    sortPerGradimento(p);
-
+//    sortPerGradimento(p);
 
     return 0;
 
-}
-
-void sortPerGradimento(Playlist p){
-    for(int i = 0; i<getCanzoniSize(p); i++){
-
-
-
-    }
 }

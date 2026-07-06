@@ -45,3 +45,33 @@ int getCanzoniSize(Playlist p){
     return sizeList(p->songs);
 }
 
+Playlist insertionSort(Playlist p){
+
+    int n = getCanzoniSize(p);
+
+    Item now;
+    Item key;
+    int j = 0;
+
+    for (int i = 1; i < n; i++) {
+        key = getListItemPos(p->songs, i);
+        j = i;
+        while (j > 0 && getGradimento(getListItemPos(p->songs, j - 1)) < getGradimento(getListItemPos(p->songs, j))){
+            swapSongs(p, j-1  ,j  );
+            j--;
+        }
+
+    }
+    return p;
+
+}
+
+void swapSongs(Playlist p, int s1Pos, int s2Pos){
+
+    Item s1Tmp = getListItemPos(p->songs,s1Pos);
+    Item s2 = getListItemPos(p->songs,s2Pos);
+
+    setListItemPos(p->songs, s1Pos ,s2 );
+    setListItemPos(p->songs, s2Pos, s1Tmp );
+
+}
