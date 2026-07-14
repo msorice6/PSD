@@ -80,10 +80,6 @@ void reverseStackOrder(Stack s){
 
 }
 
-
-
-
-
 void swapStack(Stack s, Stack s2){
 
     while(!isEmptyStack(s)){
@@ -92,4 +88,5 @@ void swapStack(Stack s, Stack s2){
     }
 
 }
+
 
