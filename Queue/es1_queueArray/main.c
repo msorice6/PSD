@@ -1,3 +1,9 @@
+/*
+    si implementi una funzione queueArrayEquals(l'ho chiamata cmpArrList) che prende in input una coda un array, il numero di elementi dell'array e restituisce
+    vero se la coda e l'array sono uguali, falso altrimenti
+*/
+
+
 #include <stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -11,6 +17,7 @@ int calcolaItemSize(Item *item_array);
 int queueArrayEqualsPrint(Queue q, Item *item_array);
 
 void listToQueue(List l, Queue q);
+
 void queueToList(Queue q, List l);
 
 void arrToList(Item *item_array, List l);
@@ -18,6 +25,7 @@ void arrToList(Item *item_array, List l);
 int cmpArrList(List al, List ql);
 
 //Item_array* ListToArray(List l);
+
 //List ArrayToList(Item* item_array);
 
 
@@ -42,12 +50,18 @@ int main(){
 //    printList(ql);
     printf("valore di ritorno cmpArrList: %d\n", cmpArrList(al, ql));
 
+    listToQueue(ql, q);
+    printf("guarda la queue com'e': \n") ;
+    printQueue(q);
+
     free(q);
     free(item_array);
 }
 int cmpArrList(List al, List ql){
     List al2 = newList();
     al2 = cloneList(al);
+
+
 
     List ql2 = newList();
     ql2 = cloneList(ql);
@@ -60,6 +74,8 @@ int cmpArrList(List al, List ql){
         tmp_ql = getHead(ql2);
 
         if( cmpItem(tmp_al, tmp_ql) != 0 ){
+            free(al2);
+            free(ql2);
             return -1;
         }else{
              removeHead(al2);
@@ -69,9 +85,9 @@ int cmpArrList(List al, List ql){
 
 
 
+
     free(al2);
     free(ql2);
-
     return 0;
 
 
@@ -102,6 +118,7 @@ void listToQueue(List l, Queue q){
 
     while(!isEmpty(l)){
          enqueue(q,getHead(l));
+         removeHead(l);
     }
     printQueue(q);
 
@@ -115,7 +132,7 @@ void inputQueue1(Queue q, Item *item_array){
     free(item_array);
     *item_array = malloc(sizeof(Item)*10) ;
     item_array[0] = inputItemChar("ciao");
-    item_array[1] = inputItemChar("brutta");
+    item_array[1] = inputItemChar("bella");
     item_array[2] = inputItemChar("gente");
     item_array[3] = NULL;
 }
