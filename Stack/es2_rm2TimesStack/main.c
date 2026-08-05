@@ -41,8 +41,6 @@ int main(){
     s = listToStack(l);
     printStack(s);
 
-
-
 	free(l);
 	free(s);
 	return 0;
@@ -106,11 +104,8 @@ List stackTolist(Stack s){
          pop(s);
     }
 
-
-
     return l;
 }
-
 
 
 Item inputItems(char* inp){

@@ -1,7 +1,4 @@
 /*
-
-    PENSO CHE DEVO RIVEDERLO MEGLIO
-
     si implementi una funzione queueArrayEquals(l'ho chiamata cmpArrList) che prende in input una coda un array, il numero di elementi dell'array e restituisce
     vero se la coda e l'array sono uguali, falso altrimenti
 */
