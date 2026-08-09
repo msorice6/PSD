@@ -3,13 +3,15 @@
     La funzione restituisce un array di due elementi ( il primo elemento dell'array conterra' l'elementom assimo della lista,
     il secondo elemento dell'array conterra' l'elemento della lista piu' grande se si esclude quello gia' inserito in prima posizione).
      nota: non alterare ( neanche temporaneamente ), clonare o ordinare la lista.
-
 */
+#define LIST_H "../../../../Data Structures/list/list.h"
+#define ITEM_H "../../../../Data Structures/list/item.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "list.h" 
-#include "item.h"
+
+#include LIST_H
+#include ITEM_H
 
 Item inputStack(int n);
 Item* dueMassimoInt(List l);

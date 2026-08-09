@@ -5,14 +5,16 @@
             * il figlio destro ha un valore maggiore (o ugulae) del padre ( o e' assente);')
         * falso altrimenti.
 */
+#define BTREE_H "../../../../Data Structures/btree/btree.h"
+#define ITEM_H "../../../../Data Structures/btree/item.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
 
-#include "btree.h"
-#include "item.h"
+#include BTREE_H
+#include ITEM_H
 
 bool checkTree(BTree h);
 int bTreeHeight(BTree h);
@@ -37,9 +39,6 @@ bool checkTree(BTree h){
     return false;
 }
 
-//      controlla per ogni nodo se
-//            * il figlio sinistro ha un valore minore (o ugulae) del padre ( o e' assente);
-//            * il figlio destro ha un valore maggiore (o ugulae) del padre ( o e' assente);')
 
 int bTreeHeight(BTree h){
     if(isEmptyTree(h))
@@ -62,7 +61,9 @@ int bTreeHeight(BTree h){
        }
 
     if( ( bTreeHeight(getLeft(h)) == 1 ) || ( bTreeHeight(getRight(h)) == 1) )  return 1;
+
 }
+
 
 
 /* QUESTO CONTROLLA SE c'e' un figlio minore del padre

@@ -3,11 +3,16 @@
     individua ed elimina soltanto il primo
 */
 
+#define LIST_H "../../../../Data Structures/stack/list.h"
+#define ITEM_H "../../../../Data Structures/stack/item.h"
+#define STACK_H "../../../../Data Structures/stack/stack.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "item.h"
-#include "stack.h"
-#include "list.h"
+#include ITEM_H
+#include STACK_H
+#include LIST_H
+
 Item inputItemInt(int n);
 void input1(Stack s);
 void stackToList(Stack s, List l);

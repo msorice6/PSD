@@ -1,28 +1,28 @@
+DS_stack = ../../../../Data Structures/stack
+
 sint: list.o main.o item_int.o stackList.o
 	gcc list.o item_int.o main.o stackList.o -o stack.exe
 
-string: list.o main.o item_string.o stackArray.o
-	gcc list.o item_string.o main.o stackArray.o -o stack.exe
-
 stackList.o:
-	gcc -c stackList.c
+	gcc -c "$(DS_stack)/stackList.c" -o stackList.o
 
 stackArray.o:
-	gcc -c stackArray.c
+	gcc -c "$(DS_stack)/stackArray.c" -o stackArray.o
 
 item_int.o:
-	gcc -c item_int.c
+	gcc -c "$(DS_stack)/item_int.c" -o item_int.o
 
 item_string.o:
-	gcc -c item_string.c
-	
-main.o:
-	gcc -c main.c
+	gcc -c "$(DS_stack)/item_string.c" -o item_string.o
 
-list.o: 
-	gcc -c list.c
+main.o:
+	gcc -c main.c -o main.o
+
+list.o:
+	gcc -c "$(DS_stack)/list.c" -o list.o
 
 c:
 	rm -f *.o *.exe
+
 r:
 	./stack.exe

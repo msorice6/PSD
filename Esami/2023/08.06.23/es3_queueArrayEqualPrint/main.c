@@ -2,14 +2,18 @@
     si implementi una funzione queueArrayEquals(l'ho chiamata cmpArrList) che prende in input una coda un array, il numero di elementi dell'array e restituisce
     vero se la coda e l'array sono uguali, falso altrimenti
 */
+#define LIST_H "../../../../Data Structures/queue/list.h"
+#define ITEM_H "../../../../Data Structures/queue/item.h"
+#define QUEUE_H "../../../../Data Structures/queue/queue.h"
 
 
 #include <stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include "item.h"
-#include "queue.h"
-#include "list.h"
+
+#include LIST_H
+#include ITEM_H
+#include QUEUE_H
 
 void inputQueue1(Queue q, Item *item_array);
 Item inputItemChar(char *inp );

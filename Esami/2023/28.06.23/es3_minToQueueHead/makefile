@@ -1,26 +1,22 @@
-int: list.o main.o item_int.o queueList.o
-	gcc list.o item_int.o main.o queueList.o -o queue.exe
+DS_queue = ../../../../Data Structures/queue
 
-string: main.o item_string.o queueArray.o
-	gcc item_string.o main.o queueArray.o -o queue.exe
+queue.exe: list.o item_int.o queueList.o main.o
+	gcc list.o item_int.o queueList.o main.o -o queue.exe
 
-queueList.o:
-	gcc -c queueList.c
-
-queueArray.o:
-	gcc -c queueArray.c
+list.o:
+	gcc -c "$(DS_queue)/list.c" -o list.o
 
 item_int.o:
-	gcc -c item_int.c
+	gcc -c "$(DS_queue)/item_int.c" -o item_int.o
 
-item_string.o:
-	gcc -c item_string.c
-	
+queueList.o:
+	gcc -c "$(DS_queue)/queueList.c" -o queueList.o
+
 main.o:
-	gcc -c main.c
+	gcc -c main.c -o main.o
 
-list.o: 
-	gcc -c list.c
-
-clean:
+c:
 	rm -f *.o *.exe
+
+r:
+	./queue.exe
