@@ -1,12 +1,13 @@
 /*
-    si implementi una funzione queueArrayEquals(l'ho chiamata cmpArrList) che prende in input una coda un array, il numero di elementi dell'array e restituisce
-    vero se la coda e l'array sono uguali, falso altrimenti
+    implementi una funzione che ricevuta in input una coda
+    rimuova gli elementi duplicati della coda stessa
+    ( se un elemento compare due volte, va rimossa la sua seconda occorrenza )
 */
 #define LIST_H "../../../../Data Structures/queue/list.h"
 #define ITEM_H "../../../../Data Structures/queue/item.h"
 #define QUEUE_H "../../../../Data Structures/queue/queue.h"
 
-
+#include <string.h>
 #include <stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -15,136 +16,55 @@
 #include ITEM_H
 #include QUEUE_H
 
-void inputQueue1(Queue q, Item *item_array);
-Item inputItemChar(char *inp );
-int calcolaItemSize(Item *item_array);
-int queueArrayEqualsPrint(Queue q, Item *item_array);
-
-void listToQueue(List l, Queue q);
-
+Item inputItemString(char *a);
 void queueToList(Queue q, List l);
-
-void arrToList(Item *item_array, List l);
-
-int cmpArrList(List al, List ql);
-
-//Item_array* ListToArray(List l);
-
-//List ArrayToList(Item* item_array);
-
-
-
+void rmSecondDoubleList(List l);
 int main(){
-    int item_size;
-    Item *item_array = malloc(sizeof(Item)*10);
-
+    List l = newList();
     Queue q = newQueue();
-    inputQueue1(q, item_array);
+    enqueue(q, inputItemString("ciao")) ;
+    enqueue(q, inputItemString("bella")) ;
+    enqueue(q, inputItemString("gente")) ;
+    enqueue(q, inputItemString("come")) ;
+    enqueue(q, inputItemString("va")) ;
+
+    queueToList(q, l);
+
 //    printQueue(q);
-    item_size = calcolaItemSize(item_array);
+    printList(l);
 
-    List ql = newList();
-    queueToList(q, ql);
-//    listToQueue(ql,q);
-
-    List al = newList();
-    arrToList(item_array, al);
-//    printList(al);
-
-//    printList(ql);
-    printf("valore di ritorno cmpArrList: %d\n", cmpArrList(al, ql));
-
-    listToQueue(ql, q);
-    printf("guarda la queue com'e': \n") ;
-    printQueue(q);
-
+    free(l);
     free(q);
-    free(item_array);
-}
-int cmpArrList(List al, List ql){
-    List al2 = newList();
-    al2 = cloneList(al);
-
-    List ql2 = newList();
-    ql2 = cloneList(ql);
-
-    Item tmp_al,tmp_ql;
-
-    while(!isEmpty(al2) && !isEmpty(ql2)){
-        tmp_al = getHead(al2);
-        tmp_ql = getHead(ql2);
-
-        if( cmpItem(tmp_al, tmp_ql) != 0 ){
-            free(al2);
-            free(ql2);
-            return -1;
-        }else{
-             removeHead(al2);
-             removeHead(ql2);
-        }
-    }
-
-    free(al2);
-    free(ql2);
     return 0;
-
 }
+void rmSecondDoubleList(List l){
+    List tmp_l = cloneList(l) ;
+    reverseList(tmp_l);
 
+    searchListItem(l, Item, int *)
 
+//    while(!isEmpty(tmp_l)){
+//        removeHead(tmp_l) ;
+//    }
 
-void arrToList(Item *item_array, List l){
-    int size = calcolaItemSize(item_array);
-
-    for(int i = 0; i < size; i++){
-       addListTail(l, item_array[i]) ;
-//        printf("ciao\n");
-//        outputItem(item_array[i]);
-    }
-
+    free(tmp_l);
 }
-
 
 void queueToList(Queue q, List l){
+
     while(!isEmptyQueue(q)){
-         addListTail(l, dequeue(q));
+        addHead(l, dequeue(q));
     }
-
+    reverseList(l);
 }
 
-void listToQueue(List l, Queue q){
 
-    while(!isEmpty(l)){
-         enqueue(q,getHead(l));
-         removeHead(l);
-    }
-    printQueue(q);
+Item inputItemString(char *a){
 
-}
+	char *pString=malloc(21*sizeof(char));
+	strcpy(pString, a);
+	return pString;
 
-void inputQueue1(Queue q, Item *item_array){
-    enqueue (q, inputItemChar ("ciao"));
-    enqueue (q, inputItemChar ("bella"));
-    enqueue (q, inputItemChar ("gente"));
 
-    free(item_array);
-    *item_array = malloc(sizeof(Item)*10) ;
-    item_array[0] = inputItemChar("ciao");
-    item_array[1] = inputItemChar("bella");
-    item_array[2] = inputItemChar("gente");
-    item_array[3] = NULL;
-}
-
-Item inputItemChar(char *inp ){
-    Item item = malloc(sizeof(char));
-    strcpy(item,inp);
-     return item;
-}
-int calcolaItemSize(Item *item_array){
-    int size = 0;
-
-    while (item_array[size] != NULL) {
-            size++;
-    }
-    return size;
 
 }
