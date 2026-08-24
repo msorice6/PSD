@@ -13,101 +13,62 @@
 #include <stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<string.h>
 
 #include LIST_H
 #include ITEM_H
 #include QUEUE_H
 
-
-Item inputItemInt(int n);
-void queueToList(Queue q, List l);
-void minListToTopQueue(List l, Queue q);
-
-void listToQueue(List l, Queue q);
+Item inputItemString(char *s);
+void mvQueueTop(Queue q, Item itm);
 
 
 int main(){
     Queue q = newQueue();
-    List l = newList();
 
-    enqueue(q, inputItemInt(6));
-    enqueue(q, inputItemInt(2));
-    enqueue(q, inputItemInt(1));
-    enqueue(q, inputItemInt(4));
-    enqueue(q, inputItemInt(5));
+    enqueue(q, inputItemString("ciao" ));
+    enqueue(q, inputItemString("come" ));
+    enqueue(q, inputItemString("gente" ));
+    enqueue(q, inputItemString("come" ));
+    enqueue(q, inputItemString("va" ));
+    printf("\n");
 
-//    printQueue(q);
-    queueToList(q, l);
-
-    minListToTopQueue(l, q);
-//    printList(l);
-    listToQueue(l, q);
+    mvQueueTop(q, inputItemString("come"));
     printQueue(q);
 
-    free(q);
-    free(l);
 	return 0;
 }
-void minListToTopQueue(List l, Queue q){
-
-    List tmp_l = newList();
-    tmp_l = cloneList(l);
-
-    int c=0;
-    int min_pos=0;
-
-    Item min=getHead(tmp_l);
-
-    //trovo pos del minimo
-    while(!isEmpty(tmp_l) ){
-
-        if(cmpItem(min,getHead(tmp_l)) > 0 ){
-            min=getHead(tmp_l);
-            min_pos=c;
-        }
-        removeHead(tmp_l);
-        c++;
-    }
-    removeListPos(l,min_pos) ;
-    addListTail(l,min);
-
-
-    free(tmp_l);
-
-}
-void listToQueue(List l, Queue q){
-    List tmp_l=newList();
-
-    tmp_l = cloneList(l);
-
-    while(!isEmpty(tmp_l) ){
-        enqueue(q,getHead(tmp_l));
-        removeHead(tmp_l);
-    }
-
+Item inputItemString(char *s){
+	char *pString=malloc(21*sizeof(char));
+	strcpy(pString, s);
+	return pString;
 }
 
-void queueToList(Queue q, List l){
-    List tmp_l = newList();
 
-    while(!isEmptyQueue(q) ){
-        addHead(l, dequeue(q));
+void mvQueueTop(Queue q, Item itm){
+    Queue tmp_q = newQueue();
+    int n_flag ;
+    n_flag = 0;
+
+    Item deq;
+    Item top_deq;
+
+    while(!isEmptyQueue(q)){
+        deq = dequeue(q);
+
+        if( (cmpItem(deq, itm) == 0) && n_flag < 1  ){
+           n_flag = 1;
+           continue;
+           }
+
+        enqueue(tmp_q, deq) ;
     }
-    reverseList(l);
 
-    tmp_l = cloneList(l);
+    while(!isEmptyQueue(tmp_q))
+        enqueue(q, dequeue(tmp_q)) ;
 
-//restore queue
-//    while(!isEmpty(tmp_l) ){
-//        enqueue(q,getHead(tmp_l));
-//        removeHead(tmp_l);
-//    }
+    enqueue(q, itm) ;
 
-    free(tmp_l);
-}
-
-Item inputItemInt(int n){
-    int *pInt=malloc(sizeof(int));
-    *pInt = n;
-    return pInt;
+    printQueue(tmp_q);
+    free(tmp_q);
 }
