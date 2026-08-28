@@ -4,6 +4,8 @@
 
     Restituisce VERO se l'elemento specificato e' stato rimosso
     Restituisce FALSO se l'elemento specificato non e' presente nello stack
+
+    utilizzare i soli operatori dello stack
 */
 
 #define LIST_H "../../../../Data Structures/stack/list.h"
@@ -19,66 +21,80 @@
 #include STACK_H
 #include LIST_H
 
-void stackToList(Stack s, List l);
-bool rmListEl(List l, Item el);
 Item inputItemString(char *s);
-void listToStack(List l, Stack s);
+Stack reverseStack(Stack s);
+int isStackrm(Stack s, Item rm_itm);
+
 int main(){
 
     Stack s = newStack();
-    List l = newList();
 
     push(s, inputItemString("come"));
     push(s, inputItemString("bella"));
     push(s, inputItemString("gente"));
     push(s, inputItemString("come"));
+    push(s, inputItemString("bella"));
     push(s, inputItemString("va"));
+    Item in_Itm = inputItemString("bella");
 
-    stackToList(s,l);
+    s=reverseStack(s);
+    printf("Stack originale: ");
+    printStack(s);
+    printf("\n");
+    printf("elemento da rimuovere: ");
+    outputItem(in_Itm);
+    printf("\n");
 
-    printf(" boolean: %d \n", rmListEl(l, inputItemString("va")));
-    listToStack(l,s);
-//    printList(l);
+//    isStackrm(s,in_Itm);
+    if(isStackrm(s,in_Itm))
+        printf("elemento presente\n");
+    else
+        printf("elemento non presente\n");
+
     printStack(s);
 
     free(s);
-    free(l);
 	return 0;
 }
+Stack reverseStack(Stack s){
 
-void listToStack(List l, Stack s){
-    reverseList(l);
-    while(!isEmpty(l)) {
-        push(s, getHead(l));
-        removeHead(l);
-    }
-}
-
-bool rmListEl(List l, Item el){
-    bool isTrue = false;
-    List tmp_l = cloneList(l);
-    int c=0;
-    while(!isEmpty(tmp_l)){
-        if(cmpItem(el, getHead(tmp_l)) == 0 ){
-            removeListPos(l, c);
-            isTrue = true;
-            break;
-        }
-
-        removeHead(tmp_l);
-        c++;
-    }
-    free(tmp_l);
-    return isTrue;
-}
-
-void stackToList(Stack s, List l){
+    Stack tmp_s = newStack();
 
     while(!isEmptyStack(s)){
-        addHead(l,top(s));
+
+        push(tmp_s,top(s)) ;
         pop(s);
     }
-    reverseList(l);
+
+    return tmp_s;
+}
+
+int isStackrm(Stack s,Item rm_itm){
+
+    Stack tmp_s = newStack();
+    int is_rm_flag = 0;
+
+    while(!isEmptyStack(s)){
+
+        if( (cmpItem(rm_itm, top(s)) == 0) && (is_rm_flag == 0 ) )  {
+            is_rm_flag = 1;
+            pop(s);
+            continue;
+        }
+        push(tmp_s, top(s));
+        pop(s);
+    }
+
+    while(!isEmptyStack(tmp_s))  {
+        push(s, top(tmp_s));
+        pop(tmp_s) ;
+    }
+    free(tmp_s);
+
+    if(is_rm_flag > 0)
+        return 1;
+
+    return 0;
 }
 
 Item inputItemString(char *s){

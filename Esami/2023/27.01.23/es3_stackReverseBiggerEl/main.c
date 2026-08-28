@@ -1,7 +1,9 @@
 /*
     implementa una funzione che inverte l'ordine degli elementi in uno stack,
        - lascia solo gli elementi maggiori di un dato elemento fornito come parametro
-       - inverte il contenuto dello stack
+       - inverte il contenuto dello stack\
+
+       utilizza solo gli operatori dello Stack
 */
 
 #define LIST_H "../../../../Data Structures/stack/list.h"
@@ -16,8 +18,7 @@
 #include LIST_H
 
 Item inputItemString(char *n);
-void stackToList(Stack s, List l);
-void maxReverseMin(List s, Item itm);
+Stack maxReverseMin(Stack s, Item itm);
 
 int main(){
     Stack s=newStack();
@@ -29,46 +30,52 @@ int main(){
     push(s,inputItemString("kwi")) ;
     push(s,inputItemString("ccp")) ;
 //    Item el = inputItemInt(3);
-    List l = newList();
-    stackToList(s,l);
 
-    maxReverseMin(l, inputItemString("dep"));
-    printList(l);
+    s = maxReverseMin(s, inputItemString("dep"));
+//    s = maxReverseMin(s, inputItemString("dep"));
+
+    printStack(s);
 
 //    outputItem(el);
 //    printStack(s);
-    free(l);
-
+    free(s);
 
 }
-void maxReverseMin(List l, Item itm){
-    List tmp_l = newList();
-    tmp_l = cloneList(l);
 
-    while(!isEmpty(tmp_l)){
-         if(cmpItem(itm, getHead(tmp_l) ) > 0 )
-            removeListItem(l, getHead(tmp_l));
+Stack maxReverseMin(Stack s, Item itm){
 
-        removeHead(tmp_l) ;
+    Stack tmp_s = newStack();
+
+    while(!isEmptyStack(s)){
+
+        if(cmpItem( top(s), itm) < 0) {
+            pop(s);
+            continue;
+        }
+
+        push(tmp_s, top(s));
+        pop(s);
+
     }
 
 
-    free(tmp_l);
+    // stack reverse
+       while(!isEmptyStack(tmp_s)){
+
+           push(s, top(tmp_s));
+           pop(tmp_s);
+
+       }
+    free(tmp_s) ;
+
+    return s;
 }
 
-void stackToList(Stack s, List l){
 
-    while(!isEmptyStack(s)) {
-         addHead(l, top(s) );
-         pop(s);
-    }
-
-}
 Item inputItemString(char *s){
 	char *pString=malloc(25*sizeof(char));
 
     strcpy(pString,s);
 	return pString;
-
 
 }

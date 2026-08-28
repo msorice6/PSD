@@ -1,6 +1,8 @@
 /*
     si implementi una funzione queueArrayEquals(l'ho chiamata cmpArrList) che prende in input una coda un array  e rimuove i duplicati della coda stessa
     se un elemento compare due volte va rimossa la sua seconda occorrenza
+
+    utilizzare solo gli operatori della coda
 */
 #define LIST_H "../../../../Data Structures/queue/list.h"
 #define ITEM_H "../../../../Data Structures/queue/item.h"
@@ -16,92 +18,89 @@
 #include QUEUE_H
 
 Item inputItemString(char *a);
-void queueToList(Queue q, List l);
-int rmDoubleList(List l);
-void listToQueue(List l, Queue q);
+void cmpArrList(Queue q);
 
 int main(){
 
     Queue q = newQueue();
 
-    enqueue(q, inputItemString("ciao")) ;
+    enqueue(q, inputItemString("ciaos")) ;
     enqueue(q, inputItemString("bella")) ;
     enqueue(q, inputItemString("gente")) ;
     enqueue(q, inputItemString("ciao")) ;
     enqueue(q, inputItemString("gente")) ;
 
 //    printQueue(q);
-
-    List l = newList();
-//    printQueue(q);
-    queueToList(q, l);
-
-    while(rmDoubleList(l) == 1);
-    listToQueue(l,q);
-//    printList(l);
-    printQueue(q);
+    cmpArrList(q);
     free(q);
-    free(l) ;
 
     return 0;
 //    printf("rmDoubleQueue\n");
 }
 
-void listToQueue(List l, Queue q){
-    while(!isEmpty(l)){
-        enqueue(q, getHead(l)) ;
-        removeHead(l);
+void cmpArrList(Queue q){
+    int rm_flag = 0;
+   Queue tmp_q_toScroll = newQueue();
+   Queue tmp_q_toCmp = newQueue();
+    int q_size =0;
+    int c=0, d=0;
+    Item itm_to_cmp;
+    Item itm_to_scroll;
+
+    //get the queue size
+    while(!isEmptyQueue(q)){
+        q_size++;
+        enqueue(tmp_q_toScroll, dequeue(q));
+        //scorre la queue e la sposta in tmp_q
     }
-}
 
-int rmDoubleList(List l) {
-//    reverseList(l);
-    List tmp_l = cloneList(l);
+    while(!isEmptyQueue(tmp_q_toScroll)){
+        enqueue(q, dequeue(tmp_q_toScroll));
+        // scorre la queue e la sposta in tmp_q
+    }
 
-    List s_tmp_l = cloneList(l);
-    int c =0;
-    int d =0;
-    while(!isEmpty(tmp_l) ){
-       // if cmpitemp
-       s_tmp_l = cloneList(tmp_l);
-       removeHead(s_tmp_l);
-//       c = 0;
-       d=0;
-       while(!isEmpty(s_tmp_l)){
-
-            if( cmpItem( getHead(tmp_l), getHead(s_tmp_l) ) == 0 ){
-
-//                printf("confronto tmp_l: ");
-//                outputItem(getHead(tmp_l));
-//                printf("          con s_tmp_l: ");
-//                outputItem(getHead(s_tmp_l));
-//                printf("con c = %d\n", d);
-//                printf("\n");
-                removeListPos(l, c+d+1);
-
-                free(tmp_l);
-                free(s_tmp_l);
-                return 1;
+    for(int i = 0; i<q_size;i++) {
+        c=0;
+        while(!isEmptyQueue(q)){
+            itm_to_scroll = dequeue(q);
+//            printf("confronto i: %d, con c: %d\n",i,c);
+            if(i==c){
+                itm_to_cmp = itm_to_scroll;
             }
-//                removeListItem(l,n);
-            removeHead(s_tmp_l);
-            d++;
+
+            enqueue(tmp_q_toScroll, itm_to_scroll);
+
+            c++;
         }
-        removeHead(tmp_l) ;
-        c++;
+
+        enqueue(q, dequeue(tmp_q_toScroll));
+//        printf("---------------------------\n");
+        while(!isEmptyQueue(tmp_q_toScroll)){
+            itm_to_scroll = dequeue(tmp_q_toScroll);
+
+//            printf("confronto itm_to_scroll: ");
+//            outputItem(itm_to_scroll);
+//            printf("    con itm_to_cmp: ");
+//            outputItem(itm_to_cmp);
+//            printf("\n");
+
+            if(cmpItem(itm_to_scroll, itm_to_cmp) == 0 && rm_flag < 1){
+                rm_flag++;
+                i=q_size;
+                continue;
+
+            }
+
+            enqueue(q, itm_to_scroll);
+        }
+
+        printf("---------------------------\n");
+
     }
 
-//    reverseList(l);
-    free(tmp_l) ;
-    free(s_tmp_l);
-    return 0;
-}
 
-void queueToList(Queue q, List l){
-    while(!isEmptyQueue(q))
-        addHead(l, dequeue(q)) ;
+    printQueue(q);
 
-        reverseList(l);
 }
 
 Item inputItemString(char *a){
