@@ -1,4 +1,8 @@
 /*
+    implementa funzione inserisciElemento che ricevuti in unput uno stack, un elemento da inserire, e un elemento di riferimento
+    inserisca l'elemento da inserire subito dopo la prima occorrenza dell'elemento di riferimento partendo dalla base dello stack
+    quindi l'elemento piu' vicino alla cima dello stack rispetto all'elemento di riferimento
+
 */
 
 #define LIST_H "../../../../Data Structures/stack/list.h"
@@ -13,9 +17,8 @@
 #include LIST_H
 
 Item inputItemString(char *s);
-int inserisciElemento(List l, Item el_ins, Item el_rif);
-void stackToList(Stack s, List l);
-void listToStack(List l, Stack s);
+int inserisciElemento(Stack s, Item el_ins, Item el_rif);
+Stack reverseStack(Stack s);
 
 int main(){
 
@@ -27,60 +30,54 @@ int main(){
     push(s, inputItemString("come"));
     push(s, inputItemString("va"));
 
+    s = reverseStack(s);
+
+    inserisciElemento(s, inputItemString("cappio"), inputItemString("come") );
 //    printStack(s);
-//    printf("\n");
-    List l = newList();
-    stackToList(s, l);
 
-    inserisciElemento(l, inputItemString("ins"), inputItemString("gente"));
-//    printList(l)  ;
-    listToStack(l,s);
-    printStack(s);
-
-    free(s);
-    free(l);
     return 0;
 }
-void listToStack(List l, Stack s){
-    reverseList(l);
-    while(!isEmpty(l)){
-        push(s, getHead(l)) ;
-        removeHead(l);
-    }
 
-}
-int inserisciElemento(List l, Item el_ins, Item el_rif){
-    List tmp_l = cloneList(l)  ;
-    int c =0;
+int inserisciElemento(Stack s, Item el_ins, Item el_rif){
+    Stack tmp_s = newStack();
+    while(!isEmptyStack(s)){
 
-    while(!isEmpty(tmp_l)){
-
-        if(cmpItem(el_rif, getHead(tmp_l) ) == 0 ){
-            printf("aggiunta!\n");
-            addListPos(l, el_ins, c+1);
-            return 1;
+        if(cmpItem(top(s), el_rif) == 0){
+            push(tmp_s, top(s));
+            push(tmp_s, el_ins);
+            pop(s);
+            continue;
         }
 
-        removeHead(tmp_l);
-        c++;
+        push(tmp_s, top(s));
+        pop(s);
+
     }
-    free(tmp_l) ;
+
+    while(!isEmptyStack(tmp_s)){
+         push(s, top(tmp_s));
+         pop(tmp_s);
+    }
+
+    printStack(s);
+
     return 0;
 }
 
-void stackToList(Stack s, List l){
+
+Stack reverseStack(Stack s){
+
+    Stack tmp_s = newStack();
+
     while(!isEmptyStack(s)){
-        addHead(l, top(s));
-        pop(s) ;
+
+        push(tmp_s, top(s));
+        pop(s);
     }
 
-    reverseList(l);
-
+    return tmp_s;
 }
-
-
 Item inputItemString(char *s){
-
 	char *pString=malloc(21*sizeof(char));
 	strcpy(pString, s);
 	return pString;
