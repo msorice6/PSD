@@ -12,76 +12,131 @@
 #include STACK_H
 #include LIST_H
 
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include ITEM_H
+#include STACK_H
+#include LIST_H
+
 Item inputItemString(char *s);
-int inserisciElemento(List l, Item el_ins, Item el_rif);
-void stackToList(Stack s, List l);
-void listToStack(List l, Stack s);
+Stack rvStack(Stack s);
+int getStackSize(Stack s);
+void rmFirstItem(Stack s, Item ins_item, Item rif_item);
+int findStackRifPos(Stack s, Item rif_item);
+Stack addStackIns(Stack s,Item ins_item, int ins_pos );
 
 int main(){
-
     Stack s = newStack();
-    push(s, inputItemString("ciao"));
+    push(s, inputItemString("gente"));
     push(s, inputItemString("bella"));
     push(s, inputItemString("gente"));
-    push(s, inputItemString("gente"));
-    push(s, inputItemString("come"));
-    push(s, inputItemString("va"));
+    push(s, inputItemString("gentes"));
+    push(s, inputItemString("di"));
 
-//    printStack(s);
-//    printf("\n");
-    List l = newList();
-    stackToList(s, l);
-
-    inserisciElemento(l, inputItemString("ins"), inputItemString("gente"));
-//    printList(l)  ;
-    listToStack(l,s);
+    s = rvStack(s) ;
+    printStack(s);
+    getStackSize(s);
+    rmFirstItem(s,inputItemString("sado") ,inputItemString("gente"));
+    s = rvStack(s);
+    printf("guarda lo stack finale: \n");
     printStack(s);
 
-    free(s);
-    free(l);
-    return 0;
+	return 0;
 }
-void listToStack(List l, Stack s){
-    reverseList(l);
-    while(!isEmpty(l)){
-        push(s, getHead(l)) ;
-        removeHead(l);
+int findStackRifPos(Stack s, Item rif_item){
+    Stack tmp_s = newStack();
+
+    while(!isEmptyStack(s)) {
+        push(tmp_s, top(s)) ;
+        pop(s);
+
     }
-
-}
-int inserisciElemento(List l, Item el_ins, Item el_rif){
-    List tmp_l = cloneList(l)  ;
+    int ins_flag=0;
+    int ins_pos = -1;
     int c =0;
+    tmp_s = rvStack(tmp_s);
 
-    while(!isEmpty(tmp_l)){
-
-        if(cmpItem(el_rif, getHead(tmp_l) ) == 0 ){
-            printf("aggiunta!\n");
-            addListPos(l, el_ins, c+1);
-            return 1;
+    while(!isEmptyStack(tmp_s)) {
+        push(s, top(tmp_s)) ;
+        if ( cmpItem( top(s), rif_item ) == 0 && ins_flag <= 2 ){
+            ins_flag++;
+            ins_pos = c;
+            printf("\n uguale! \n");
         }
-
-        removeHead(tmp_l);
+        pop(tmp_s);
         c++;
     }
-    free(tmp_l) ;
-    return 0;
+
+    return ins_pos;
 }
 
-void stackToList(Stack s, List l){
-    while(!isEmptyStack(s)){
-        addHead(l, top(s));
-        pop(s) ;
+Stack addStackIns(Stack s,Item ins_item, int ins_pos ){
+    Stack tmp_s = newStack();
+
+    while(!isEmptyStack(s)) {
+        push(tmp_s, top(s)) ;
+        pop(s);
     }
 
-    reverseList(l);
+    int c=0;
+    while(!isEmptyStack(tmp_s)) {
+        push(s, top(tmp_s));
+        if(c == ins_pos){
+            push(s, ins_item) ;
+        }
+        pop(tmp_s);
+        c++;
+    }
+
+    return s;
 
 }
+void rmFirstItem(Stack s, Item ins_item, Item rif_item){
+    int ins_pos;
+    ins_pos = findStackRifPos(s, rif_item);
 
+       Stack tmp_s = newStack();
+       while(!isEmptyStack(s)) {
+           push(tmp_s, top(s)) ;
+           pop(s);
+       }
+
+    tmp_s = addStackIns(tmp_s, ins_item,  ins_pos );
+    while(!isEmptyStack(tmp_s)) {
+        push(s, top(tmp_s)) ;
+        pop(tmp_s);
+    }
+
+
+}
+int getStackSize(Stack s){
+    Stack tmp_s = newStack();
+    int c = 0;
+    while(!isEmptyStack(s)) {
+        push(tmp_s, top(s)) ;
+        pop(s);
+        c++;
+    }
+
+    while(!isEmptyStack(tmp_s)) {
+        push(s, top(tmp_s)) ;
+        pop(tmp_s);
+    }
+    return c;
+}
 
 Item inputItemString(char *s){
-
 	char *pString=malloc(21*sizeof(char));
 	strcpy(pString, s);
 	return pString;
+}
+
+Stack rvStack(Stack s){
+    Stack tmp_s = newStack();
+    while(!isEmptyStack(s)){
+        push(tmp_s,top(s) );
+        pop(s);
+    }
+    return tmp_s;
 }

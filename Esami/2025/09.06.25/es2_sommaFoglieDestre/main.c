@@ -62,7 +62,29 @@ int sommaFoglieDestre(BTree t){
         }
 
 
-
     }
     return n + sommaFoglieDestre(getLeft(t)) + sommaFoglieDestre(getRight(t));
 }
+
+BTree input1(BTree t){
+
+    BTree l = newTree();
+    BTree r = newTree();
+
+    BTree ll = newTree();
+    BTree lr = newTree();
+
+    ll = buildTree(NULL,NULL,inputItemInt(1));
+    lr = buildTree(NULL,NULL, inputItemInt(5));
+
+
+
+    r = buildTree(NULL, NULL, inputItemInt(6));
+    l = buildTree(ll,lr,inputItemInt(3));
+
+
+    t = buildTree(l, r, inputItemInt(7));
+    return t;
+
+}
+

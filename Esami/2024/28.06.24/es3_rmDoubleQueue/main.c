@@ -15,97 +15,132 @@
 #include ITEM_H
 #include QUEUE_H
 
-Item inputItemString(char *a);
-void queueToList(Queue q, List l);
-int rmDoubleList(List l);
-void listToQueue(List l, Queue q);
+void reverseQueue(Queue q);
+Item inputItemString(char *s);
+int trovaDoppioni(Queue q);
+void queueToQueue(Queue q, Queue tmp_q);
+int scrollItemQueue(Queue q,Item itm_to_cmp);
 
+void every_output(Queue q);
+void input1(Queue q);
+void input2(Queue q);
+void input3(Queue q);
+void input4(Queue q);
+
+void output(Queue q);
 int main(){
 
     Queue q = newQueue();
+    input1(q);
+    every_output(q);
 
+    q = newQueue();
+    input2(q);
+    every_output(q);
+
+    q = newQueue();
+    input3(q);
+    every_output(q);
+
+    q = newQueue();
+    input4(q);
+    every_output(q);
+
+    return 0;
+}
+void every_output(Queue q){
+    printf("Coda originale: ");
+    printQueue(q);
+    printf("\nsono stati rimossi %d elementi\n", trovaDoppioni(q));
+    printf("coda dopo rim.: ");
+    printQueue(q);
+    printf("\n");
+    printf("\n");
+}
+
+void input1(Queue q){
+}
+
+void input2(Queue q){
+    enqueue(q, inputItemString("ciao")) ;
+}
+
+void input3(Queue q){
     enqueue(q, inputItemString("ciao")) ;
     enqueue(q, inputItemString("bella")) ;
     enqueue(q, inputItemString("gente")) ;
-    enqueue(q, inputItemString("ciao")) ;
-    enqueue(q, inputItemString("gente")) ;
-
-//    printQueue(q);
-
-    List l = newList();
-//    printQueue(q);
-    queueToList(q, l);
-
-    while(rmDoubleList(l) == 1);
-    listToQueue(l,q);
-//    printList(l);
-    printQueue(q);
-    free(q);
-    free(l) ;
-
-    return 0;
-//    printf("rmDoubleQueue\n");
+    enqueue(q, inputItemString("bella")) ;
+    enqueue(q, inputItemString("va")) ;
 }
 
-void listToQueue(List l, Queue q){
-    while(!isEmpty(l)){
-        enqueue(q, getHead(l)) ;
-        removeHead(l);
-    }
+void input4(Queue q){
+    enqueue(q, inputItemString("o")) ;
+    enqueue(q, inputItemString("f")) ;
+    enqueue(q, inputItemString("i")) ;
+    enqueue(q, inputItemString("zk")) ;
+    enqueue(q, inputItemString("d")) ;
+    enqueue(q, inputItemString("e")) ;
+    enqueue(q, inputItemString("e")) ;
+    enqueue(q, inputItemString("t")) ;
+    enqueue(q, inputItemString("e")) ;
+    enqueue(q, inputItemString("k")) ;
+    enqueue(q, inputItemString("f")) ;
 }
 
-int rmDoubleList(List l) {
-//    reverseList(l);
-    List tmp_l = cloneList(l);
+int scrollItemQueue(Queue q,Item itm_to_cmp){
+    Item dequeued;
+    Queue tmp_q = newQueue();
+    int flag = 0;
+    while(!isEmptyQueue(q)){
 
-    List s_tmp_l = cloneList(l);
-    int c =0;
-    int d =0;
-    while(!isEmpty(tmp_l) ){
-       // if cmpitemp
-       s_tmp_l = cloneList(tmp_l);
-       removeHead(s_tmp_l);
-//       c = 0;
-       d=0;
-       while(!isEmpty(s_tmp_l)){
-
-            if( cmpItem( getHead(tmp_l), getHead(s_tmp_l) ) == 0 ){
-
-//                printf("confronto tmp_l: ");
-//                outputItem(getHead(tmp_l));
-//                printf("          con s_tmp_l: ");
-//                outputItem(getHead(s_tmp_l));
-//                printf("con c = %d\n", d);
-//                printf("\n");
-                removeListPos(l, c+d+1);
-
-                free(tmp_l);
-                free(s_tmp_l);
-                return 1;
-            }
-//                removeListItem(l,n);
-            removeHead(s_tmp_l);
-            d++;
+        dequeued = dequeue(q);
+        if(cmpItem(itm_to_cmp, dequeued) == 0 ) {
+            flag++;
+                continue;
         }
-        removeHead(tmp_l) ;
-        c++;
+        enqueue(tmp_q, dequeued);
     }
 
-//    reverseList(l);
-    free(tmp_l) ;
-    free(s_tmp_l);
-    return 0;
+    queueToQueue(tmp_q, q);
+
+    return flag;
 }
 
-void queueToList(Queue q, List l){
+int trovaDoppioni(Queue q){
+    if(isEmptyQueue(q))
+        return 0;
+
+
+    Queue tmp_q = newQueue();
+    Item itm_to_cmp;
+    int rmvd_items = 0;
+    while(!isEmptyQueue(q)){
+        itm_to_cmp = dequeue(q);
+        rmvd_items+=scrollItemQueue(q,itm_to_cmp);
+        enqueue(tmp_q, itm_to_cmp);
+    }
+
+    queueToQueue(tmp_q, q);
+    return rmvd_items;
+}
+
+void queueToQueue(Queue q, Queue tmp_q){
     while(!isEmptyQueue(q))
-        addHead(l, dequeue(q)) ;
+        enqueue(tmp_q, dequeue(q));
+}
+void reverseQueue(Queue q){
+    if(isEmptyQueue(q))
+        return;
 
-        reverseList(l);
+    Item q_itm = dequeue(q);
+    reverseQueue(q);
+
+    enqueue(q,q_itm);
 }
 
-Item inputItemString(char *a){
+
+Item inputItemString(char *s){
 	char *pString=malloc(21*sizeof(char));
-	strcpy(pString, a);
+	strcpy(pString,s);
 	return pString;
 }
