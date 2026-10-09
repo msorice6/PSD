@@ -2,8 +2,9 @@
     si implementi la funzione elementiUnivoci che ricevuto in input una lista,
     restituisce il numero di elementi univoci presenti nella lisa
 */
-#define LIST_H "../../Data Structures/list/list.h"
-#define ITEM_H "../../Data Structures/list/item.h"
+
+#define LIST_H "../../../../Data Structures/list/list.h"
+#define ITEM_H "../../../../Data Structures/list/item.h"
 
 #include <string.h>
 #include <stdio.h>
