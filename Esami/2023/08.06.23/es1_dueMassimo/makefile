@@ -1,8 +1,5 @@
 DS = ../../../../Data Structures/list
 
-int: list.o main.o item_int.o
-	gcc list.o item_int.o main.o -o list.exe
-
 string: list.o main.o item_string.o
 	gcc list.o item_string.o main.o -o list.exe
 
