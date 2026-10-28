@@ -1,6 +1,55 @@
 /*
-    implementa una funzione che rimuove un elemento dallo stack. se l'elemento e' presente piu' volte
-    individua ed elimina soltanto il primo
+    Esercizio 2. Si implementi, completando il progetto fornito (Esercizio2), una funzione che rimuove un elemento dallo stack.
+    Nel caso in cui l'elemento sia presente più volte nello stack, individua ed elimina soltanto il primo. Se l'elemento specificato non è presente,
+    il programma stampa un messaggio informativo per l'utente.
+    Modificare esclusivamente i file main.c e makefile aggiungendo la/le funzioni necessarie e completando int main().
+    Utilizzare i soli operatori di base dello stack (non modificare stack.c e stack.h). Non restituire un nuovo stack.
+
+Testare la procedura sui seguenti elemento da rimuove/stack (NON chiedere input all'utente da tastiera, inserire tutto nel codice C):
+
+Elemento da rimuovere: "ciao"; Stack: stack_vuoto
+
+Elemento da rimuovere: "ciao"; Stack: "ciao"
+
+Elemento da rimuovere: "ciao"; Stack (ordine di inserimento): "ciao", "bella", "gente", "bella", "va"
+
+Elemento da rimuovere: "dado"; Stack (ordine di inserimento): "bella", "gente", "bella", "va"
+
+Elemento da rimuovere: item_casuale; Stack: 9 item causali
+
+(per generare gli item casuali usare randomItem() già fornita)
+
+ATTENZIONE: affinché l'esercizio venga valutato è necessario che il progetto modificato compili (con il comando make). La valutazione è fortemente influenzata
+dal fatto che il progetto modificato esegua senza errori (ad es. segmentation fault) e produca un output.
+
+Esempio di output: (NOTA: il vostro programma DEVE riprodurre questo output, eccetto per l'elemento casuale e lo stack causale che dovranno essere differenti ad
+ogni esecuzione del programma)
+
+
+Stack originale:
+Elemento da rimuovere: ciao
+Elemento non presente
+Stack dopo rim.:
+
+Stack originale: ciao
+Elemento da rimuovere: ciao
+Elemento rimosso
+Stack dopo rim.:
+
+Stack originale: va       bella gente bella ciao
+Elemento da rimuovere: ciao
+Elemento rimosso
+Stack dopo rim.: va       bella gente bella
+
+Stack originale: va       bella gente bella
+Elemento da rimuovere: bella
+Elemento rimosso
+Stack dopo rim.: va       gente bella
+
+Stack originale: s        hz     g       v       g       c       k       z       m
+Elemento da rimuovere: g
+Elemento rimosso
+Stack dopo rim.: s        hz     v       g       c       k       z       m
 */
 
 #define LIST_H "../../../../Data Structures/stack/list.h"
@@ -9,114 +58,129 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include ITEM_H
 #include STACK_H
 #include LIST_H
 
-Item inputItemInt(int n);
-void input1(Stack s);
-void stackToList(Stack s, List l);
-int chkItemList(List l, Item itm);
-void ListToStack(List l, Stack s);
+Item inputItemString(char *s);
+int firstStackRm(Stack s, Item itm_rm);
+void evryOutput(Stack s, Item itm_rm);
 int main(){
 
-	int pos;
+    Stack s_1 = newStack();
+    Item itm_rm_1 = inputItemString("ciao");
+    evryOutput(s_1, itm_rm_1);
+    printf("\n");
 
-    Stack s = newStack();
-
-    input1(s); // [ 2, 2, 3, 2 ]
-
-    List l = newList();
-    stackToList(s,l);
-    int isChk;
-
-    isChk = chkItemList(l, inputItemInt(9)); // elemento che vuoi rimuovere
-    printf("guarda isChk: %d", isChk);
-
-//    printStack(s);
+    Stack s_2 = newStack();
+    push(s_2,inputItemString("ciao"));
+    Item itm_rm_2 = inputItemString("ciao");
+    evryOutput(s_2, itm_rm_2);
     printf("\n");
 
 
-    ListToStack(l,s);
-//    printList(l);
-    if(isChk > 0)
-        printStack(s);
-    else
-        printf("elemento non presente nello stack");
+    Stack s_3 = newStack();
 
-    free(l);
-    free(s);
+    push(s_3,inputItemString("ciao"));
+    push(s_3,inputItemString("bella"));
+    push(s_3,inputItemString("gente"));
+    push(s_3,inputItemString("bella"));
+    push(s_3,inputItemString("va"));
+
+    Item itm_rm_3 = inputItemString("ciao");
+    evryOutput(s_3,itm_rm_3);
+    printf("\n");
+
+    Stack s_4 = newStack();
+
+    push(s_4,inputItemString("ciao"));
+    push(s_4,inputItemString("bella"));
+    push(s_4,inputItemString("gente"));
+    push(s_4,inputItemString("bella"));
+    push(s_4,inputItemString("va"));
+
+    Item itm_rm_4 = inputItemString("bella");
+    evryOutput(s_4,itm_rm_4);
+    printf("\n");
+
+
+
+/*
+    Stack s_5 = newStack();
+
+    push(s_5,randomItem());
+    push(s_5,randomItem());
+    push(s_5,randomItem());
+    push(s_5,randomItem());
+
+    Item itm_rm_5 = randomItem();
+
+
+    evryOutput(s,itm_rm_5);
+*/
+
 	return 0;
 
 }
 
-void ListToStack(List l, Stack s){
-    reverseList(l);
-    while( getHead(l) != NULL){
-        push(s,getHead(l));
-        removeHead(l);
-    }
-}
+void evryOutput(Stack s, Item itm_rm) {
 
-int chkItemList(List l, Item itm){
-    int isChk = 0;
-    int c = 0;
-    List tmp_l= newList();
-    tmp_l=cloneList(l);
+    printf("Stack originale: ");
+    printStack(s);
+    printf("\nElemento da rimuovere: ");
+    outputItem(itm_rm);
 
-    while(getHead(tmp_l) != NULL ){
+    if (firstStackRm(s,itm_rm) > 0 )
+        printf("\nElemento rimosso");
+    else
+        printf("\n");
 
-        if(cmpItem(itm, getHead(tmp_l)) == 0 ){
-            printf("rm pos %d\n", c);
-            removeListPos(l, c) ;
-            isChk++;
-            break;
-        }
-
-        removeHead(tmp_l);
-        c++;
-    }
-
-    return isChk;
+    printf("Stack dopo rim.: ");
+    printStack(s);
+    printf("\n");
 
 
 }
 
-void stackToList(Stack s, List l){
+
+int firstStackRm(Stack s, Item itm_rm){
+
+    if (isEmptyStack(s))
+        return 0;
+
     Stack tmp_s = newStack();
+    Item itm_cmp;
+    int flag = 0;
+    while (!isEmptyStack(s)) {
 
-    List tmp_l= newList();
-
-
-    while(top(s) != NULL){
-        addHead(l,top(s) );
+        itm_cmp = top(s);
+        if (flag == 0) {
+            if (cmpItem(itm_cmp, itm_rm) == 0) {
+                flag++;
+                pop(s);
+                continue;
+            }
+        }
+        push(tmp_s, itm_cmp);
         pop(s);
+
     }
 
-    tmp_l=cloneList(l);
-    reverseList(l);
+    while (!isEmptyStack(tmp_s)) {
+        itm_cmp = top(tmp_s) ;
+        push(s, itm_cmp);
+        pop(tmp_s);
 
-    printf("\n\nitem: ");
-    outputItem(getHead(tmp_l));
-    printf("\n\n-----------\n\n");
 
-    reverseList(l);
-    free(tmp_l);
+    }
 
-}
-void input1(Stack s){
-
-    push(s,inputItemInt(3));
-    push(s,inputItemInt(2));
-    push(s,inputItemInt(3));
-    push(s,inputItemInt(4));
+    return flag;
 
 }
 
-Item inputItemInt(int n){
-
-    int *p = malloc(sizeof(int));
-    *p = n;
-    return p;
-
+Item inputItemString(char *s){
+    char *pString=malloc(21*sizeof(char));
+    strcpy(pString, s);
+    return pString;
 }

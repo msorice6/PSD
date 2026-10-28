@@ -1,7 +1,7 @@
 DS_stack = ../../../../Data Structures/stack
 
-sint: list.o main.o item_int.o stackList.o
-	gcc list.o item_int.o main.o stackList.o -o stack.exe
+sint: list.o main.o item_string.o stackList.o
+	gcc list.o item_string.o main.o stackList.o -o stack.exe
 
 stackList.o:
 	gcc -c "$(DS_stack)/stackList.c" -o stackList.o

@@ -1,7 +1,44 @@
-/* implementa una funzione sommaFoglieDestre(BTree) che prenda in input un labero binario
-    e:
-     - restituisce la somma dei valori contenuti nei nodi foglia
-     che sono figli destri
+/*
+
+
+Esercizio 2: Si implementi, completando il progetto fornito (Esercizio2) una funzione sommaFoglieDestre che, dato in input un albero binario,
+restituisce la somma dei valori contenuti nei nodi foglia che sono figli destri.
+
+Un nodo n si considera foglia destra se:
+
+n non ha figli;
+
+n è il figlio destro del suo genitore.
+
+Usare la ricorsione per implementare l'algoritmo. Si indichi anche, utilizzando i commenti nel codice, la complessità asintotica della funzione implementata,
+fornendo una breve giustificazione sulla risposta. ATTENZIONE: leggere le note sui commenti e la compilazione nella prima pagina della traccia.
+
+Modificare esclusivamente i file main.c e makefile, senza aggiungere o modificare gli operatori disponibili negli ADT forniti.
+
+ATTENZIONE: la funzione non deve fare stampe.
+
+ATTENZIONE: affinché l'esercizio venga valutato è necessario che il progetto modificato compili (con il comando make).
+La valutazione è fortemente influenzata dal fatto che il progetto modificato esegua senza errori (ad es. segmentation fault) e produca un output.
+
+Testare nel main la procedura sui seguenti alberi (NON chiedere input all'utente da tastiera, inserire tutto nel codice C):
+
+Un albero vuoto;
+
+Un albero consistente della sola radice contenente il numero 2;
+
+Un albero instanziato come di seguito:
+
+      7
+     / \
+    3   6
+   / \
+  1   5
+Un primo albero casuale (richiamare newRandomTree(3) per creare l'albero casuale);
+
+Un secondo albero casuale (richiamare newRandomTree(4) per creare l'albero casuale).
+
+Utilizzare la funzione printTree(BTree) per stampare gli alberi e la funzione newRandomTree(int) per creare l'albero casuale (fornite dall'ADT).
+
 */
 
 #define BTREE_H "../../../../Data Structures/btree/btree.h"
@@ -19,11 +56,12 @@ int sumLeaf(BTree t);
 int sommaFoglieDestre(BTree t);
 
 int *outputItemInt(Item itm);
+void evryOutput(BTree t);
 int main(){
-    BTree t = newTree();
-    t = newRandomTree(8) ;
-    printTree(t);
-    printf("somma nodi: %d\n", sommaFoglieDestre(t));
+    BTree t_5 = newTree();
+    t_5 = newRandomTree(4) ;
+    printTree(t_5);
+    printf("somma nodi: %d\n", sommaFoglieDestre(t_5));
 //    int *sa =outputItemInt(inputItem()) ;
 //    int da = *sa;
 //    printf("salve salvino: %d", da);

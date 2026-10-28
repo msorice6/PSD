@@ -1,7 +1,31 @@
 /*
-    data una coda, cerca l'elemento piu' piccolo e spostalo alla testa della coda
-        * se sono presenti + elementi minimi uguali, sposta soltanto il primo
+Esercizio 3. Si implementi, completando il progetto fornito (Esercizio3), una procedura che, dato una coda, cerca l'elemento più piccolo e lo sposta alla testa della coda.
+Nel caso in cui siano presenti più elementi minimi uguali, individua e sposta soltanto il primo. Modificare esclusivamente il file main.c aggiungendo la/le funzioni necessarie
+e completando int main(). Utilizzare i soli operatori di base della coda (non modificare queue.c e queue.h). Non restituire una nuova coda.
+Non usare funzioni di ordinamento (ad es. MergeSort).   Testare la procedura sui seguenti parametro/coda (NON chiedere input all'utente da tastiera,
+inserire tutto nel codice C):
+Coda: coda_vuota
+Coda: "ciao"
+Coda: "ciao", "bella", "casa"
+Coda: "ciao", "bella", "gente", "bella", "va"
+Coda: 5 item causali
+(per generare gli item casuali usare randomItem () già fornita))
+ATTENZIONE: affinché l'esercizio venga valutato è necessario che il progetto modificato compili (con il comando make).
+La valutazione è fortemente influenzata dal fatto che il progetto modificato esegua senza errori (ad es. segmentation fault) e produca un output.
+Esempio di output: (NOTA: il vostro programma DEVE riprodurre questo output, eccetto per la coda causale che dovrà essere differente ad ogni esecuzione del programma)    :
+Coda modificata:
 
+Coda originale : ciao
+Coda modificata: ciao
+
+Coda originale : ciao   bella casa
+Coda modificata: bella  ciao  casa
+
+Coda originale : ciao   bella gente bella va
+Coda modificata: bella  ciao  gente bella va
+
+Coda originale : ffw    vla    cnf    pqd    i
+Coda modificata: cnf    ffw    vla    pqd    i
 */
 
 
@@ -19,95 +43,65 @@
 #include QUEUE_H
 
 
-Item inputItemInt(int n);
-void queueToList(Queue q, List l);
-void minListToTopQueue(List l, Queue q);
-
-void listToQueue(List l, Queue q);
+Item inputItemString(char *s);
+void minToQueueHead(Queue q);
 
 
 int main(){
     Queue q = newQueue();
-    List l = newList();
 
-    enqueue(q, inputItemInt(6));
-    enqueue(q, inputItemInt(2));
-    enqueue(q, inputItemInt(1));
-    enqueue(q, inputItemInt(4));
-    enqueue(q, inputItemInt(5));
+    enqueue(q, inputItemString("ffw"));
+    enqueue(q, inputItemString("vla"));
+    enqueue(q, inputItemString("cnf"));
+    enqueue(q, inputItemString("pqd"));
+    enqueue(q, inputItemString("i"));
 
-//    printQueue(q);
-    queueToList(q, l);
-
-    minListToTopQueue(l, q);
-//    printList(l);
-    listToQueue(l, q);
-    printQueue(q);
-
-    free(q);
-    free(l);
+    minToQueueHead(q);
 	return 0;
 }
-void minListToTopQueue(List l, Queue q){
 
-    List tmp_l = newList();
-    tmp_l = cloneList(l);
+void minToQueueHead(Queue q) {
+    if (isEmptyQueue(q))
+        return;
+    Queue tmp_q = newQueue();
+    Item q_min;
+    Item q_cmp;
+    int flag = 0;
 
-    int c=0;
-    int min_pos=0;
 
-    Item min=getHead(tmp_l);
+    q_min = dequeue(q) ;
+    enqueue(tmp_q, q_min);
+    if (isEmptyQueue(q))
+        return;
 
-    //trovo pos del minimo
-    while(!isEmpty(tmp_l) ){
+    while (!isEmptyQueue(q)) {
+        q_cmp = dequeue(q);
 
-        if(cmpItem(min,getHead(tmp_l)) > 0 ){
-            min=getHead(tmp_l);
-            min_pos=c;
+        if (cmpItem(q_cmp,q_min )<0)
+            q_min = q_cmp;
+
+        enqueue(tmp_q, q_cmp);
+
+
+    }
+    enqueue(q, q_min);
+    while (!isEmptyQueue(tmp_q)) {
+       q_cmp = dequeue(tmp_q);
+        if (flag == 0) {
+            if (cmpItem(q_cmp, q_min) == 0) {
+                flag++;
+                continue;
+
+            }
         }
-        removeHead(tmp_l);
-        c++;
+        enqueue(q, q_cmp);
+
     }
-    removeListPos(l,min_pos) ;
-    addListTail(l,min);
-
-
-    free(tmp_l);
+    printQueue(q);
 
 }
-void listToQueue(List l, Queue q){
-    List tmp_l=newList();
-
-    tmp_l = cloneList(l);
-
-    while(!isEmpty(tmp_l) ){
-        enqueue(q,getHead(tmp_l));
-        removeHead(tmp_l);
-    }
-
-}
-
-void queueToList(Queue q, List l){
-    List tmp_l = newList();
-
-    while(!isEmptyQueue(q) ){
-        addHead(l, dequeue(q));
-    }
-    reverseList(l);
-
-    tmp_l = cloneList(l);
-
-//restore queue
-//    while(!isEmpty(tmp_l) ){
-//        enqueue(q,getHead(tmp_l));
-//        removeHead(tmp_l);
-//    }
-
-    free(tmp_l);
-}
-
-Item inputItemInt(int n){
-    int *pInt=malloc(sizeof(int));
-    *pInt = n;
-    return pInt;
+Item inputItemString(char *s){
+    char *pString=malloc(21*sizeof(char));
+    strcpy(pString, s);
+    return pString;
 }
